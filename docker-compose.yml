@@ -1,0 +1,134 @@
+networks:
+  control_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.100.0/24
+    driver_opts:
+      com.docker.network.bridge.name: "br_control"
+  process_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.200.0/24
+    driver_opts:
+      com.docker.network.bridge.name: "br_process"
+
+volumes:
+  historian_data:
+
+services:
+  plc:
+    build: ./traffic-plc
+    container_name: plc_simulator
+    hostname: plc
+    networks:
+      process_network:
+        ipv4_address: 192.168.200.10
+    ports:
+      - "5020:5020"
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.connect(('localhost',5020)); s.close()"]	
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  
+  historian:
+    image: postgres:16-alpine
+    container_name: historian_db
+    hostname: historian
+    networks:
+      process_network:
+        ipv4_address: 192.168.200.30
+    environment:
+      POSTGRES_DB: industrial_data
+      POSTGRES_USER: scada_tfg
+      POSTGRES_PASSWORD: scada_pass_tfg
+    volumes:
+      - historian_data:/var/lib/postgresql/data
+    restart: unless-stopped
+  
+  monitor:
+    build: ./docker
+    container_name: monitor_zeek
+    hostname: monitor
+    networks:
+      control_network:
+        ipv4_address: 192.168.100.200
+      process_network:
+        ipv4_address: 192.168.200.200
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      - net.ipv4.ip_forward=1
+    volumes:
+      - ./captura:/capture
+      - ./docker/zeek/zeek_logs:/zeek_logs
+      - ./docker/zeek:/zeek_config
+    restart: unless-stopped
+    depends_on:
+      - plc
+
+  scada:
+    build: ./scada
+    container_name: scada_server
+    hostname: scada
+    networks:
+      control_network:
+        ipv4_address: 192.168.100.20
+    ports:
+      - "8080:8080"
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      plc:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - PLC_HOST=192.168.200.10
+      - PLC_PORT=5020
+    command: >
+      sh -c "ip route add 192.168.200.0/24 via 192.168.100.200 && ./entrypoint.sh"
+
+  workstation:
+    image: python:3.13-slim
+    container_name: workstation_eng
+    hostname: workstation
+    networks:
+      control_network:
+        ipv4_address: 192.168.100.40
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./workstation_start.py:/app/workstation_start.py
+    command: >
+      sh -c "apt-get update && apt-get install -y iproute2 --no-install-recommends &&
+      ip route add 192.168.200.0/24 via 192.168.100.200 &&
+      pip install pymodbus requests --quiet &&
+      python3 /app/workstation_start.py"
+    restart: unless-stopped
+    depends_on:
+      plc:
+        condition: service_healthy
+  attacker:
+    build: ./attacker
+    container_name: attacker_node
+    hostname: attacker
+    networks:
+      control_network:
+        ipv4_address: 192.168.100.100
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    stdin_open: true
+    tty: true
+    volumes: 
+      - ./attacker/scripts:/scripts
+    command: >
+      sh -c "ip route add 192.168.200.0/24 via 192.168.100.200 && tail -f /dev/null"
+    restart: "no"
+

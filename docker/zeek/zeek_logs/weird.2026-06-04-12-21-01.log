@@ -1,0 +1,2 @@
+{"ts":1780568461.906906,"uid":"CIVKvx4XUwhYFV2NXd","id.orig_h":"192.168.100.100","id.orig_p":37764,"id.resp_h":"192.168.200.10","id.resp_p":5020,"name":"invalid_http_09_request_method","addl":"OPTIONS","notice":false,"peer":"zeek","source":"HTTP"}
+{"ts":1780568539.52337,"uid":"CeKvdb3wzmj7Jcm2v7","id.orig_h":"192.168.100.100","id.orig_p":55988,"id.resp_h":"192.168.200.10","id.resp_p":5020,"name":"invalid_http_09_request_method","addl":"OPTIONS","notice":false,"peer":"zeek","source":"HTTP"}

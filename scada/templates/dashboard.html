@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCADA HMI — Sistema Industrial TFG</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; }
+  header { background: #161b22; border-bottom: 1px solid #30363d; padding: 12px 24px;
+           display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 18px; color: #58a6ff; letter-spacing: 1px; }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+                background: #3fb950; box-shadow: 0 0 6px #3fb950; animation: pulse 2s infinite; }
+  .status-dot.error { background: #f85149; box-shadow: 0 0 6px #f85149; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  main { padding: 20px 24px; display: grid; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .card h2 { font-size: 11px; color: #8b949e; text-transform: uppercase;
+             letter-spacing: 1px; margin-bottom: 12px; }
+  .sensor-value { font-size: 28px; font-weight: bold; color: #58a6ff; }
+  .sensor-label { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .zone-card { text-align: center; padding: 12px 8px; }
+  .zone-label { font-size: 10px; color: #8b949e; margin-bottom: 6px; }
+  .zone-value { font-size: 20px; font-weight: bold; }
+  .temp-val  { color: #ff7b72; }
+  .press-val { color: #79c0ff; }
+  .flow-val  { color: #56d364; }
+  .valve-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .valve { text-align: center; padding: 10px 4px; border-radius: 6px;
+           border: 1px solid #30363d; font-size: 11px; }
+  .valve.open  { background: #1a4a1a; border-color: #3fb950; color: #3fb950; }
+  .valve.closed { background: #3a1515; border-color: #f85149; color: #f85149; }
+  .valve.pump  { font-size: 10px; }
+  .log-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px;
+             padding: 10px; height: 120px; overflow-y: auto; font-size: 11px;
+             color: #8b949e; font-family: monospace; }
+  .log-line { padding: 2px 0; border-bottom: 1px solid #21262d; }
+  .log-line.ok  { color: #3fb950; }
+  .log-line.err { color: #f85149; }
+  .stat { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; }
+  .stat-val { color: #f0f6fc; font-weight: bold; }
+  #last-update { font-size: 11px; color: #8b949e; }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚙ SCADA HMI — Planta Industrial TFG-IDS</h1>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="status-dot" id="status-dot"></span>
+    <span id="status-text" style="font-size:12px">Conectando...</span>
+    <span id="last-update"></span>
+  </div>
+</header>
+
+<main>
+  <!-- Resumen global -->
+  <div class="grid-3">
+    <div class="card">
+      <h2>Temperatura media (°C)</h2>
+      <div class="sensor-value" id="avg-temp">--</div>
+      <div class="sensor-label">Promedio zonas 1-5</div>
+    </div>
+    <div class="card">
+      <h2>Presión media (bar)</h2>
+      <div class="sensor-value" id="avg-press" style="color:#79c0ff">--</div>
+      <div class="sensor-label">Promedio zonas 1-5</div>
+    </div>
+    <div class="card">
+      <h2>Caudal medio (L/min)</h2>
+      <div class="sensor-value" id="avg-flow" style="color:#56d364">--</div>
+      <div class="sensor-label">Promedio zonas 1-5</div>
+    </div>
+  </div>
+
+  <!-- Temperaturas por zona -->
+  <div class="card">
+    <h2>Temperatura por zona (°C)</h2>
+    <div class="grid-5" id="temps-grid"></div>
+  </div>
+
+  <!-- Presiones por zona -->
+  <div class="card">
+    <h2>Presión por zona (bar)</h2>
+    <div class="grid-5" id="press-grid"></div>
+  </div>
+
+  <!-- Caudales por zona -->
+  <div class="card">
+    <h2>Caudal por zona (L/min)</h2>
+    <div class="grid-5" id="flow-grid"></div>
+  </div>
+
+  <!-- Válvulas y bombas -->
+  <div class="card">
+    <h2>Actuadores — Válvulas y bombas</h2>
+    <div class="valve-grid" id="valves-grid"></div>
+  </div>
+
+  <!-- Estadísticas y log -->
+  <div class="grid-3">
+    <div class="card">
+      <h2>Estadísticas de comunicación</h2>
+      <div class="stat"><span>Lecturas OK</span><span class="stat-val" id="poll-count">0</span></div>
+      <div class="stat"><span>Errores</span><span class="stat-val" id="err-count">0</span></div>
+      <div class="stat"><span>PLC</span><span class="stat-val" id="plc-addr">--</span></div>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <h2>Log de eventos</h2>
+      <div class="log-box" id="log-box"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const avgTemp  = document.getElementById('avg-temp');
+const avgPress = document.getElementById('avg-press');
+const avgFlow  = document.getElementById('avg-flow');
+const tempsG   = document.getElementById('temps-grid');
+const pressG   = document.getElementById('press-grid');
+const flowG    = document.getElementById('flow-grid');
+const valvesG  = document.getElementById('valves-grid');
+const logBox   = document.getElementById('log-box');
+const statusDot  = document.getElementById('status-dot');
+const statusText = document.getElementById('status-text');
+const lastUpd    = document.getElementById('last-update');
+
+function avg(arr) { return (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1); }
+
+function addLog(msg, type='ok') {
+  const d = new Date().toLocaleTimeString();
+  const div = document.createElement('div');
+  div.className = `log-line ${type}`;
+  div.textContent = `[${d}] ${msg}`;
+  logBox.prepend(div);
+  if (logBox.children.length > 30) logBox.lastChild.remove();
+}
+
+function renderZones(container, values, cls, decimals=1) {
+  container.innerHTML = '';
+  values.forEach((v, i) => {
+    const d = document.createElement('div');
+    d.className = 'zone-card';
+    d.innerHTML = `<div class="zone-label">Zona ${i+1}</div>
+                   <div class="zone-value ${cls}">${v.toFixed(decimals)}</div>`;
+    container.appendChild(d);
+  });
+}
+
+function renderValves(valves, pumps) {
+  valvesG.innerHTML = '';
+  valves.forEach((v, i) => {
+    const d = document.createElement('div');
+    d.className = `valve ${v ? 'open' : 'closed'}`;
+    d.innerHTML = `<div>V${i+1}</div><div>${v ? 'ABIERTA' : 'CERRADA'}</div>`;
+    valvesG.appendChild(d);
+  });
+  pumps.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = `valve pump ${p ? 'open' : 'closed'}`;
+    d.innerHTML = `<div>B${i+1}</div><div>${p ? 'MARCHA' : 'PARADA'}</div>`;
+    valvesG.appendChild(d);
+  });
+}
+
+async function fetchData() {
+  try {
+    const res  = await fetch('/api/data');
+    const data = await res.json();
+
+    const ok = data.status === 'connected';
+    statusDot.className  = 'status-dot' + (ok ? '' : ' error');
+    statusText.textContent = ok ? 'PLC conectado' : data.status;
+    lastUpd.textContent    = new Date().toLocaleTimeString();
+
+    avgTemp.textContent  = avg(data.temperatures);
+    avgPress.textContent = avg(data.pressures);
+    avgFlow.textContent  = avg(data.flows);
+
+    renderZones(tempsG,  data.temperatures, 'temp-val',  1);
+    renderZones(pressG,  data.pressures,    'press-val', 2);
+    renderZones(flowG,   data.flows,        'flow-val',  1);
+    renderValves(data.valves, data.pumps);
+
+    document.getElementById('poll-count').textContent = data.poll_count;
+    document.getElementById('err-count').textContent  = data.error_count;
+
+    const statusRes  = await fetch('/api/status');
+    const statusData = await statusRes.json();
+    document.getElementById('plc-addr').textContent = statusData.plc;
+
+    if (data.poll_count % 5 === 0)
+      addLog(`Lectura #${data.poll_count} — T:${avg(data.temperatures)}°C P:${avg(data.pressures)}bar`, 'ok');
+
+  } catch(e) {
+    addLog(`Error de red: ${e.message}`, 'err');
+    statusDot.className = 'status-dot error';
+    statusText.textContent = 'Sin conexión con SCADA';
+  }
+}
+
+fetchData();
+setInterval(fetchData, 2000);
+</script>
+</body>
+</html>
