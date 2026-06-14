@@ -41,8 +41,8 @@ services:
     container_name: historian_db
     hostname: historian
     networks:
-      process_network:
-        ipv4_address: 192.168.200.30
+      control_network:
+        ipv4_address: 192.168.100.30
     environment:
       POSTGRES_DB: industrial_data
       POSTGRES_USER: scada_tfg
@@ -114,6 +114,7 @@ services:
     depends_on:
       plc:
         condition: service_healthy
+        
   attacker:
     build: ./attacker
     container_name: attacker_node

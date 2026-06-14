@@ -13,6 +13,7 @@ import os
 import time
 import threading
 import logging
+import psycopg2
 from collections import deque
 from datetime import datetime
 
@@ -33,6 +34,11 @@ PLC_PORT = int(os.getenv("PLC_PORT", 5020))
 POLL_INTERVAL = 2.0   # segundos
 HISTORY_SIZE  = 100   # puntos en el histórico
 
+DB_HOST = "192.168.100.30"
+DB_NAME = "industrial_data"
+DB_USER = "scada_tfg"
+DB_PASSWORD = "scada_pass_tfg"
+
 # Estado compartido (protegido por lock)
 state_lock = threading.Lock()
 current_data = {
@@ -48,6 +54,59 @@ current_data = {
 }
 history = deque(maxlen=HISTORY_SIZE)
 
+def get_db_connection():
+    try:
+        conn = psycopg2.connect(
+            host = DB_HOST,
+            database = DB_NAME,
+            user = DB_USER,
+            password = DB_PASSWORD
+        )
+        logger.info(f"Conexion a PostgreSQL establecida con {DB_HOST}")
+        return conn
+    except Exception as e:
+        logger.error(f"Error al conector con PostgreSQL: {e}")
+        return None
+    
+def init_db():
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS plc_data (
+                    id SERIAL PRIMARY KEY,
+                    timestamp TIMESTAMP DEFAULT NOW(),
+                    temperature_1 FLOAT,
+                    temperature_2 FLOAT,
+                    temperature_3 FLOAT,
+                    temperature_4 FLOAT,
+                    temperature_5 FLOAT,
+                    pressure_1 FLOAT,
+                    pressure_2 FLOAT,
+                    pressure_3 FLOAT,
+                    pressure_4 FLOAT,
+                    pressure_5 FLOAT,
+                    flow_1 FLOAT,
+                    flow_2 FLOAT,
+                    flow_3 FLOAT,
+                    flow_4 FLOAT,
+                    flow_5 FLOAT,
+                    valve_1 BOOLEAN,
+                    valve_2 BOOLEAN,
+                    valve_3 BOOLEAN,
+                    valve_4 BOOLEAN,
+                    valve_5 BOOLEAN,
+                    pump_1 BOOLEAN,
+                    pump_2 BOOLEAN           
+                );
+            """)
+            conn.commit()
+            logger.info("Tabla 'plc_data' inicializada correctamente en PostgreSQL")
+        except Exception as e:
+            logger.error(f"Error al inicializar la tabla: {e}")
+        finally:
+            conn.close()
 
 def poll_plc():
     """Hilo de polling continuo al PLC."""
@@ -89,6 +148,41 @@ def poll_plc():
                     "pres": snapshot["pressures"][0],
                     "flow": snapshot["flows"][0],
                 })
+            
+            conn = get_db_connection()
+            if conn:
+                try:
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        INSERT INTO plc_data (
+                            timestamp, temperature_1, temperature_2,
+                            temperature_3, temperature_4, temperature_5,
+                            pressure_1, pressure_2, pressure_3,
+                            pressure_4, pressure_5,
+                            flow_1, flow_2, flow_3, flow_4, flow_5,
+                            valve_1, valve_2, valve_3, valve_4, valve_5,
+                            pump_1, pump_2    
+                        ) VALUES (
+                            %s, %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s
+                        );
+                    """, (
+                        snapshot["timestamp"],
+                        *snapshot["temperatures"],
+                        *snapshot["pressures"],
+                        *snapshot["flows"],
+                        *snapshot["valves"],
+                        *snapshot["pumps"]
+                    ))
+                    conn.commit()
+                    logger.info("Datos guardados correctamente en PostgreSQL")
+                except Exception as e:
+                    logger.error(f"Error al guardar datos en PostgreSQL: {e}")
+                finally:
+                    conn.close()
 
         except Exception as e:
             logger.warning(f"Error polling PLC: {e}")
@@ -131,6 +225,8 @@ def api_status():
 
 
 if __name__ == "__main__":
+    # Inicializar la base de datos
+    init_db()
     # Arrancar hilo de polling
     t = threading.Thread(target=poll_plc, daemon=True, name="PLCPoller")
     t.start()
