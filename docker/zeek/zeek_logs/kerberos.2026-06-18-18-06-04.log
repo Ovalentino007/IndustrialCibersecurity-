@@ -1,0 +1,2 @@
+{"ts":1781798754.175863,"uid":"CuPAKE4WBGJgeKbYc8","id.orig_h":"192.168.100.100","id.orig_p":41730,"id.resp_h":"192.168.200.10","id.resp_p":5020,"request_type":"AS","client":"/NM","service":"krbtgt/NM","till":0.0,"forwardable":true,"renewable":true}
+{"ts":1781798912.421462,"uid":"CNsgu51mr870VywZHh","id.orig_h":"192.168.100.100","id.orig_p":44206,"id.resp_h":"192.168.200.10","id.resp_p":5020,"request_type":"AS","client":"/NM","service":"krbtgt/NM","till":0.0,"forwardable":true,"renewable":true}

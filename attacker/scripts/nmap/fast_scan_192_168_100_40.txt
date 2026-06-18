@@ -1,0 +1,4 @@
+WARNING: Duplicate port number(s) specified.  Are you alert enough to be using Nmap?  Have some coffee or Jolt(tm).
+# Nmap 7.94SVN scan initiated Thu Jun 18 16:04:48 2026 as: nmap -p 1-1000,502,5020,80,8080,5432,22,443 -sV --open -T3 -oN ./nmap/fast_scan_192_168_100_40.txt 192.168.100.40
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Jun 18 16:04:48 2026 -- 1 IP address (1 host up) scanned in 0.22 seconds

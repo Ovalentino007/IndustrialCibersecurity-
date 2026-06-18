@@ -1,0 +1,8 @@
+# Nmap 7.94SVN scan initiated Wed Jun 17 15:43:05 2026 as: nmap --script vuln -p 5432 -oN /scripts/recon_results/vuln_192_168_200_1_5432.txt 192.168.200.1
+Nmap scan report for 192.168.200.1
+Host is up (0.00020s latency).
+
+PORT     STATE  SERVICE
+5432/tcp closed postgresql
+
+# Nmap done at Wed Jun 17 15:43:15 2026 -- 1 IP address (1 host up) scanned in 10.29 seconds

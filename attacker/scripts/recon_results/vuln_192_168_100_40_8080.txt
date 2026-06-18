@@ -1,0 +1,9 @@
+# Nmap 7.94SVN scan initiated Wed Jun 17 15:30:35 2026 as: nmap --script vuln -p 8080 -oN /scripts/recon_results/vuln_192_168_100_40_8080.txt 192.168.100.40
+Nmap scan report for workstation_eng.tfg-ids-industrial_control_network (192.168.100.40)
+Host is up (0.000059s latency).
+
+PORT     STATE  SERVICE
+8080/tcp closed http-proxy
+MAC Address: CA:20:80:C4:FB:EA (Unknown)
+
+# Nmap done at Wed Jun 17 15:30:45 2026 -- 1 IP address (1 host up) scanned in 10.20 seconds
