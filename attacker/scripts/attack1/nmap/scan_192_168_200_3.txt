@@ -1,0 +1,9 @@
+# Nmap 7.94SVN scan initiated Tue Sep  8 22:26:58 2026 as: nmap -p- -sV --open -T4 -oN ./attack1/nmap/scan_192_168_200_3.txt 192.168.200.3
+Nmap scan report for 192.168.200.3
+Host is up (0.0000090s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE      VERSION
+5020/tcp open  zenginkyo-1?
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Sep  8 22:29:36 2026 -- 1 IP address (1 host up) scanned in 158.37 seconds

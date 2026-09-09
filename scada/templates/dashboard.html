@@ -54,7 +54,6 @@
     <span id="last-update"></span>
   </div>
 </header>
-
 <main>
   <!-- Resumen global -->
   <div class="grid-3">
@@ -74,37 +73,33 @@
       <div class="sensor-label">Promedio zonas 1-5</div>
     </div>
   </div>
-
   <!-- Temperaturas por zona -->
   <div class="card">
     <h2>Temperatura por zona (°C)</h2>
     <div class="grid-5" id="temps-grid"></div>
   </div>
-
   <!-- Presiones por zona -->
   <div class="card">
     <h2>Presión por zona (bar)</h2>
     <div class="grid-5" id="press-grid"></div>
   </div>
-
   <!-- Caudales por zona -->
   <div class="card">
     <h2>Caudal por zona (L/min)</h2>
     <div class="grid-5" id="flow-grid"></div>
   </div>
-
   <!-- Válvulas y bombas -->
   <div class="card">
     <h2>Actuadores — Válvulas y bombas</h2>
     <div class="valve-grid" id="valves-grid"></div>
   </div>
-
   <!-- Estadísticas y log -->
   <div class="grid-3">
     <div class="card">
       <h2>Estadísticas de comunicación</h2>
       <div class="stat"><span>Lecturas OK</span><span class="stat-val" id="poll-count">0</span></div>
       <div class="stat"><span>Errores</span><span class="stat-val" id="err-count">0</span></div>
+      <div class="stat"><span>Setpoint actual</span><span class="stat-val" id="setpoint-val">--</span></div>
       <div class="stat"><span>PLC</span><span class="stat-val" id="plc-addr">--</span></div>
     </div>
     <div class="card" style="grid-column: span 2;">
@@ -113,7 +108,6 @@
     </div>
   </div>
 </main>
-
 <script>
 const avgTemp  = document.getElementById('avg-temp');
 const avgPress = document.getElementById('avg-press');
@@ -126,9 +120,7 @@ const logBox   = document.getElementById('log-box');
 const statusDot  = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const lastUpd    = document.getElementById('last-update');
-
 function avg(arr) { return (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1); }
-
 function addLog(msg, type='ok') {
   const d = new Date().toLocaleTimeString();
   const div = document.createElement('div');
@@ -137,7 +129,6 @@ function addLog(msg, type='ok') {
   logBox.prepend(div);
   if (logBox.children.length > 30) logBox.lastChild.remove();
 }
-
 function renderZones(container, values, cls, decimals=1) {
   container.innerHTML = '';
   values.forEach((v, i) => {
@@ -148,7 +139,6 @@ function renderZones(container, values, cls, decimals=1) {
     container.appendChild(d);
   });
 }
-
 function renderValves(valves, pumps) {
   valvesG.innerHTML = '';
   valves.forEach((v, i) => {
@@ -164,43 +154,35 @@ function renderValves(valves, pumps) {
     valvesG.appendChild(d);
   });
 }
-
 async function fetchData() {
   try {
     const res  = await fetch('/api/data');
     const data = await res.json();
-
     const ok = data.status === 'connected';
     statusDot.className  = 'status-dot' + (ok ? '' : ' error');
     statusText.textContent = ok ? 'PLC conectado' : data.status;
     lastUpd.textContent    = new Date().toLocaleTimeString();
-
     avgTemp.textContent  = avg(data.temperatures);
     avgPress.textContent = avg(data.pressures);
     avgFlow.textContent  = avg(data.flows);
-
     renderZones(tempsG,  data.temperatures, 'temp-val',  1);
     renderZones(pressG,  data.pressures,    'press-val', 2);
     renderZones(flowG,   data.flows,        'flow-val',  1);
     renderValves(data.valves, data.pumps);
-
     document.getElementById('poll-count').textContent = data.poll_count;
     document.getElementById('err-count').textContent  = data.error_count;
-
+    document.getElementById('setpoint-val').textContent = data.setpoint + ' bar';
     const statusRes  = await fetch('/api/status');
     const statusData = await statusRes.json();
     document.getElementById('plc-addr').textContent = statusData.plc;
-
     if (data.poll_count % 5 === 0)
       addLog(`Lectura #${data.poll_count} — T:${avg(data.temperatures)}°C P:${avg(data.pressures)}bar`, 'ok');
-
   } catch(e) {
     addLog(`Error de red: ${e.message}`, 'err');
     statusDot.className = 'status-dot error';
     statusText.textContent = 'Sin conexión con SCADA';
   }
 }
-
 fetchData();
 setInterval(fetchData, 2000);
 </script>

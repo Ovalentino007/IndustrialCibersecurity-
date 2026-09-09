@@ -1,9 +1,0 @@
-# Nmap 7.94SVN scan initiated Wed Jun 17 15:31:36 2026 as: nmap --script vuln -p 80 -oN /scripts/recon_results/vuln_192_168_100_200_80.txt 192.168.100.200
-Nmap scan report for monitor_zeek.tfg-ids-industrial_control_network (192.168.100.200)
-Host is up (0.00017s latency).
-
-PORT   STATE  SERVICE
-80/tcp closed http
-MAC Address: 66:57:3B:8F:D6:09 (Unknown)
-
-# Nmap done at Wed Jun 17 15:31:46 2026 -- 1 IP address (1 host up) scanned in 10.23 seconds

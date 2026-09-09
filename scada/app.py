@@ -8,7 +8,7 @@ Dashboard web en tiempo real que:
   - Genera tráfico benigno continuo hacia el PLC
   - Almacena histórico en memoria (últimos 100 valores)
 """
-
+import random
 import os
 import time
 import threading
@@ -29,12 +29,12 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-PLC_HOST = os.getenv("PLC_HOST", "192.168.100.10")
+PLC_HOST = os.getenv("PLC_HOST", "192.168.200.3")
 PLC_PORT = int(os.getenv("PLC_PORT", 5020))
 POLL_INTERVAL = 2.0   # segundos
 HISTORY_SIZE  = 100   # puntos en el histórico
 
-DB_HOST = "192.168.100.30"
+DB_HOST = "192.168.202.3"
 DB_NAME = "industrial_data"
 DB_USER = "scada_tfg"
 DB_PASSWORD = "scada_pass_tfg"
@@ -48,6 +48,7 @@ current_data = {
     "flows":        [0.0] * 5,
     "valves":       [False] * 5,
     "pumps":        [False] * 2,
+    "setpoint":     0.0,
     "status":       "iniciando",
     "poll_count":   0,
     "error_count":  0,
@@ -136,6 +137,7 @@ def poll_plc():
                 "flows":        [round(regs[i+10] / 10, 1) for i in range(5)],
                 "valves":       [bool(coils[i]) for i in range(5)],
                 "pumps":        [bool(coils[5]), bool(coils[6])],
+                "setpoint":     round(regs[15] / 100, 2),
                 "status":       "connected",
             }
 
@@ -193,6 +195,21 @@ def poll_plc():
 
         time.sleep(POLL_INTERVAL)
 
+def legitimate_writes():
+    """Simula a un operador ajustando el setpoint desde el HMI de vez en
+    cuando. Genera tráfico de escritura Modbus legítimo."""
+    client = ModbusTcpClient(PLC_HOST, port=PLC_PORT, timeout=3)
+    while True:
+        time.sleep(random.uniform(45, 90))
+        try:
+            if not client.is_socket_open():
+                client.connect()
+            new_setpoint = random.randint(300, 400)
+            client.write_register(15, new_setpoint, slave=1)
+            logger.info(f"[Operador] Setpoint ajustado a {new_setpoint} vía HMI")
+        except Exception as e:
+            logger.warning(f"Error al ajustar setpoint: {e}")
+
 
 # ── Rutas Flask ───────────────────────────────────────────────
 
@@ -229,6 +246,7 @@ if __name__ == "__main__":
     init_db()
     # Arrancar hilo de polling
     t = threading.Thread(target=poll_plc, daemon=True, name="PLCPoller")
+    threading.Thread(target=legitimate_writes, daemon=True, name="OperatorWrites").start()  
     t.start()
 
     logger.info("Servidor SCADA iniciado en 0.0.0.0:8080")

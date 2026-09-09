@@ -1,8 +1,0 @@
-# Nmap 7.94SVN scan initiated Wed Jun 17 15:32:27 2026 as: nmap --script vuln -p 502 -oN /scripts/recon_results/vuln_192_168_100_100_502.txt 192.168.100.100
-Nmap scan report for attacker (192.168.100.100)
-Host is up (0.00012s latency).
-
-PORT    STATE  SERVICE
-502/tcp closed mbap
-
-# Nmap done at Wed Jun 17 15:32:37 2026 -- 1 IP address (1 host up) scanned in 10.17 seconds

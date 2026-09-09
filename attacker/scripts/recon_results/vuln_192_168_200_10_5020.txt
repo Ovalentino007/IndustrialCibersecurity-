@@ -1,8 +1,0 @@
-# Nmap 7.94SVN scan initiated Wed Jun 17 15:43:46 2026 as: nmap --script vuln -p 5020 -oN /scripts/recon_results/vuln_192_168_200_10_5020.txt 192.168.200.10
-Nmap scan report for 192.168.200.10
-Host is up (0.00013s latency).
-
-PORT     STATE SERVICE
-5020/tcp open  zenginkyo-1
-
-# Nmap done at Wed Jun 17 15:44:10 2026 -- 1 IP address (1 host up) scanned in 24.28 seconds

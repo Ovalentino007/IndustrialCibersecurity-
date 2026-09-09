@@ -1,0 +1,755 @@
+{
+  "target": "192.168.200.3:5020",
+  "scan_duration_s": 65,
+  "sample_interval_s": 1.0,
+  "holding_registers": {
+    "0": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 384,
+      "max": 536,
+      "distinct_values_seen": 54
+    },
+    "1": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 416,
+      "max": 571,
+      "distinct_values_seen": 50
+    },
+    "2": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 417,
+      "max": 543,
+      "distinct_values_seen": 52
+    },
+    "3": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 388,
+      "max": 546,
+      "distinct_values_seen": 55
+    },
+    "4": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 402,
+      "max": 560,
+      "distinct_values_seen": 53
+    },
+    "5": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 299,
+      "max": 579,
+      "distinct_values_seen": 52
+    },
+    "6": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 309,
+      "max": 571,
+      "distinct_values_seen": 59
+    },
+    "7": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 299,
+      "max": 598,
+      "distinct_values_seen": 60
+    },
+    "8": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 316,
+      "max": 565,
+      "distinct_values_seen": 59
+    },
+    "9": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 282,
+      "max": 577,
+      "distinct_values_seen": 59
+    },
+    "10": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 103,
+      "max": 450,
+      "distinct_values_seen": 61
+    },
+    "11": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 41,
+      "max": 343,
+      "distinct_values_seen": 57
+    },
+    "12": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 123,
+      "max": 499,
+      "distinct_values_seen": 62
+    },
+    "13": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 62,
+      "max": 338,
+      "distinct_values_seen": 59
+    },
+    "14": {
+      "role": "variable_continua_candidato_sensor",
+      "min": 103,
+      "max": 460,
+      "distinct_values_seen": 58
+    },
+    "15": {
+      "role": "variable_discreta_candidato_setpoint",
+      "min": 344,
+      "max": 378,
+      "distinct_values_seen": 2,
+      "values_seen": [
+        344,
+        378
+      ]
+    },
+    "16": {
+      "role": "constante_pequena_candidato_flag_modo",
+      "constant_value": 1
+    },
+    "17": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "18": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "19": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "20": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "21": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "22": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "23": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "24": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "25": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "26": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "27": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "28": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "29": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "30": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "31": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "32": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "33": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "34": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "35": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "36": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "37": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "38": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "39": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "40": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "41": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "42": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "43": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "44": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "45": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "46": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "47": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "48": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "49": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "50": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "51": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "52": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "53": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "54": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "55": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "56": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "57": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "58": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "59": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "60": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "61": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "62": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "63": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "64": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "65": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "66": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "67": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "68": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "69": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "70": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "71": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "72": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "73": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "74": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "75": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "76": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "77": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "78": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "79": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "80": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "81": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "82": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "83": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "84": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "85": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "86": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "87": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "88": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "89": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "90": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "91": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "92": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "93": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "94": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "95": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "96": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "97": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "98": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    },
+    "99": {
+      "role": "constante_cero_probable_no_usado",
+      "constant_value": 0
+    }
+  },
+  "coils": {
+    "0": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "1": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "2": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "3": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "4": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "5": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "6": {
+      "role": "control_candidato_con_actividad_observada"
+    },
+    "7": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "8": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "9": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "10": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "11": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "12": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "13": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "14": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "15": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "16": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "17": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "18": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "19": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "20": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "21": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "22": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "23": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "24": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "25": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "26": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "27": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "28": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "29": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "30": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "31": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "32": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "33": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "34": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "35": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "36": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "37": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "38": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "39": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "40": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "41": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "42": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "43": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "44": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "45": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "46": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "47": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "48": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "49": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "50": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "51": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "52": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "53": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "54": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "55": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "56": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "57": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "58": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "59": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "60": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "61": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "62": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "63": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "64": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "65": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "66": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "67": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "68": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "69": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "70": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "71": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "72": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "73": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "74": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "75": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "76": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "77": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "78": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "79": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "80": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "81": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "82": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "83": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "84": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "85": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "86": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "87": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "88": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "89": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "90": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "91": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "92": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "93": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "94": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "95": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "96": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "97": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "98": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    },
+    "99": {
+      "role": "constante_inactivo_sin_cambios_en_la_ventana"
+    }
+  },
+  "best_guess_setpoint_address": 15,
+  "best_guess_active_coil_addresses": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}

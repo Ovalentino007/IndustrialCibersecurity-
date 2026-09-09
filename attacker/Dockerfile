@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     python3 \
     python3-pip \
+    openssh-client \
+    hydra \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir --break-system-packages \
@@ -22,8 +24,10 @@ RUN pip3 install --no-cache-dir --break-system-packages \
 
 RUN mkdir -p /scripts
 
+COPY start.sh /start.sh
+RUN chmod +x start.sh
+
 WORKDIR /scripts
 
-CMD ["sleep","infinity"]
-
+ENTRYPOINT ["/start.sh"]
 

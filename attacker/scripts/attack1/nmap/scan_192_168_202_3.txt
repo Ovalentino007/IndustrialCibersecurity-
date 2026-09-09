@@ -1,0 +1,14 @@
+# Nmap 7.94SVN scan initiated Tue Sep  8 22:32:49 2026 as: nmap -p- -sV --open -T4 -oN ./attack1/nmap/scan_192_168_202_3.txt 192.168.202.3
+Nmap scan report for 192.168.202.3
+Host is up (0.000011s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE    VERSION
+5432/tcp open  postgresql PostgreSQL DB 9.6.0 or later
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port5432-TCP:V=7.94SVN%I=7%D=9/8%Time=6AA08D18%P=aarch64-unknown-linux-
+SF:gnu%r(SMBProgNeg,8C,"E\0\0\0\x8bSFATAL\0VFATAL\0C0A000\0Munsupported\x2
+SF:0frontend\x20protocol\x2065363\.19778:\x20server\x20supports\x203\.0\x2
+SF:0to\x203\.0\0Fpostmaster\.c\0L2169\0RProcessStartupPacket\0\0");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Sep  8 22:32:56 2026 -- 1 IP address (1 host up) scanned in 7.13 seconds

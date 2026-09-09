@@ -1,9 +1,0 @@
-# Nmap 7.94SVN scan initiated Wed Jun 17 15:19:29 2026 as: nmap --script vuln -p 80 -oN /scripts/recon_results/vuln_192_168_100_20_80.txt 192.168.100.20
-Nmap scan report for scada_server.tfg-ids-industrial_control_network (192.168.100.20)
-Host is up (0.00015s latency).
-
-PORT   STATE  SERVICE
-80/tcp closed http
-MAC Address: FA:60:E8:91:55:81 (Unknown)
-
-# Nmap done at Wed Jun 17 15:19:40 2026 -- 1 IP address (1 host up) scanned in 10.23 seconds

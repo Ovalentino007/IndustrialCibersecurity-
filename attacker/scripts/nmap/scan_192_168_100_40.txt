@@ -1,3 +1,0 @@
-# Nmap 7.94SVN scan initiated Thu Jun 18 16:04:48 2026 as: nmap -p- -sV --open -T4 -oN ./nmap/scan_192_168_100_40.txt 192.168.100.40
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Thu Jun 18 16:04:49 2026 -- 1 IP address (1 host up) scanned in 0.56 seconds

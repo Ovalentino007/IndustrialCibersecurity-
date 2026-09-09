@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Logs de Zeek y capturas de red (regenerables, muy pesados)
+docker/zeek/zeek_logs/
+docker/captura/
+
+# Dataset y artefactos de ML (supera el limite de 100MB de GitHub, regenerable con build_dataset.py)
+ml/dataset.csv
+ml/*.csv
+ml/*.pkl
+ml/*.joblib
+
+# Snapshots historicos locales de desarrollo (no forman parte del codigo actual)
+archivo_historico_*/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.env
+
+# Editor
+.vscode/
+*.swp

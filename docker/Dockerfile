@@ -38,11 +38,10 @@ RUN mkdir -p /capture /zeek_logs /zeek_config
 # ── Configuración y script de arranque ───────────────────────
 # La imagen zeek/zeek instala Zeek en /usr/local/zeek
 # y ya lo añade al PATH — no hace falta ENV PATH manualmente
-COPY zeek/local.zeek  /zeek_config/local.zeek
 COPY start.sh         /start.sh
 
 RUN chmod +x start.sh
 
 WORKDIR /capture
 
-CMD  ["/start.sh"]
+ENTRYPOINT  ["/start.sh"]

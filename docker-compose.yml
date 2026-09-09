@@ -1,18 +1,55 @@
+# docker-compose.yaml — TFG Ciberseguridad Industrial
+# Versión: topología en estrella (ronda 2026-07-27), monitor como único nodo multi-homed.
+# Estado: PENDIENTE DE VALIDAR por el alumno en su entorno real (aún no probado).
+# Sustituye a la versión anterior de 2 redes compartidas (control_network/process_network).
+#
+# Direccionamiento (patrón: monitor siempre .2, host siempre .3, /29 por enlace):
+#   net_proceso     192.168.200.0/29  -> monitor .2, plc .3
+#   net_scada       192.168.201.0/29  -> monitor .2, scada .3
+#   net_historian   192.168.202.0/29  -> monitor .2, historian .3
+#   net_workstation 192.168.203.0/29  -> monitor .2, workstation .3
+#   net_attacker    192.168.204.0/29  -> monitor .2, attacker .3
+#
+# Cada host (plc, scada, historian, workstation, attacker) necesita UNA única ruta
+# nueva en su arranque: `ip route add 192.168.0.0/16 via <IP del monitor en su enlace>`
+# — sustituye a las rutas /32 por-vecino de la versión anterior.
+
 networks:
-  control_network:
+  net_proceso:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.100.0/24
+        - subnet: 192.168.200.0/29
     driver_opts:
-      com.docker.network.bridge.name: "br_control"
-  process_network:
+      com.docker.network.bridge.name: "br_proceso"
+  net_scada:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.200.0/24
+        - subnet: 192.168.201.0/29
     driver_opts:
-      com.docker.network.bridge.name: "br_process"
+      com.docker.network.bridge.name: "br_scada"
+  net_historian:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.202.0/29
+    driver_opts:
+      com.docker.network.bridge.name: "br_historian"
+  net_workstation:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.203.0/29
+    driver_opts:
+      com.docker.network.bridge.name: "br_workstation"
+  net_attacker:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.204.0/29
+    driver_opts:
+      com.docker.network.bridge.name: "br_attacker"
 
 volumes:
   historian_data:
@@ -23,26 +60,28 @@ services:
     container_name: plc_simulator
     hostname: plc
     networks:
-      process_network:
-        ipv4_address: 192.168.200.10
+      net_proceso:
+        ipv4_address: 192.168.200.3
     ports:
       - "5020:5020"
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.connect(('localhost',5020)); s.close()"]	
+      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.connect(('localhost',5020)); s.close()"]
       interval: 10s
       timeout: 5s
       retries: 3
-  
+
   historian:
-    image: postgres:16-alpine
+    build: ./historian
     container_name: historian_db
     hostname: historian
     networks:
-      control_network:
-        ipv4_address: 192.168.100.30
+      net_historian:
+        ipv4_address: 192.168.202.3
+    cap_add:
+      - NET_ADMIN
     environment:
       POSTGRES_DB: industrial_data
       POSTGRES_USER: scada_tfg
@@ -50,23 +89,29 @@ services:
     volumes:
       - historian_data:/var/lib/postgresql/data
     restart: unless-stopped
-  
+
   monitor:
     build: ./docker
     container_name: monitor_zeek
     hostname: monitor
     networks:
-      control_network:
-        ipv4_address: 192.168.100.200
-      process_network:
-        ipv4_address: 192.168.200.200
+      net_proceso:
+        ipv4_address: 192.168.200.2
+      net_scada:
+        ipv4_address: 192.168.201.2
+      net_historian:
+        ipv4_address: 192.168.202.2
+      net_workstation:
+        ipv4_address: 192.168.203.2
+      net_attacker:
+        ipv4_address: 192.168.204.2
     cap_add:
       - NET_ADMIN
       - NET_RAW
     sysctls:
       - net.ipv4.ip_forward=1
     volumes:
-      - ./captura:/capture
+      - ./docker/captura:/capture
       - ./docker/zeek/zeek_logs:/zeek_logs
       - ./docker/zeek:/zeek_config
     restart: unless-stopped
@@ -78,10 +123,11 @@ services:
     container_name: scada_server
     hostname: scada
     networks:
-      control_network:
-        ipv4_address: 192.168.100.20
+      net_scada:
+        ipv4_address: 192.168.201.3
     ports:
       - "8080:8080"
+      - "2222:22" #SSH expuesto pues el ataque va por red interna
     cap_add:
       - NET_ADMIN
     depends_on:
@@ -89,47 +135,37 @@ services:
         condition: service_healthy
     restart: unless-stopped
     environment:
-      - PLC_HOST=192.168.200.10
+      - PLC_HOST=192.168.200.3
       - PLC_PORT=5020
-    command: >
-      sh -c "ip route add 192.168.200.0/24 via 192.168.100.200 && ./entrypoint.sh"
 
   workstation:
-    image: python:3.13-slim
+    build: ./workstation
     container_name: workstation_eng
     hostname: workstation
     networks:
-      control_network:
-        ipv4_address: 192.168.100.40
+      net_workstation:
+        ipv4_address: 192.168.203.3
     cap_add:
       - NET_ADMIN
-    volumes:
-      - ./workstation_start.py:/app/workstation_start.py
-    command: >
-      sh -c "apt-get update && apt-get install -y iproute2 --no-install-recommends &&
-      ip route add 192.168.200.0/24 via 192.168.100.200 &&
-      pip install pymodbus requests --quiet &&
-      python3 /app/workstation_start.py"
     restart: unless-stopped
     depends_on:
       plc:
         condition: service_healthy
-        
+
   attacker:
     build: ./attacker
     container_name: attacker_node
     hostname: attacker
     networks:
-      control_network:
-        ipv4_address: 192.168.100.100
+      net_attacker:
+        ipv4_address: 192.168.204.3
     cap_add:
       - NET_ADMIN
       - NET_RAW
     stdin_open: true
     tty: true
-    volumes: 
+    volumes:
       - ./attacker/scripts:/scripts
-    command: >
-      sh -c "ip route add 192.168.200.0/24 via 192.168.100.200 && tail -f /dev/null"
+      - ./attacker/start.sh:/start.sh
+    command: sh /start.sh
     restart: "no"
-
